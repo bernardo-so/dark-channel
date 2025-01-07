@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: dark-channel
+
+openai:
+  api:
+    key: ${OPENAI_API_KEY}
+    url: ${OPENAI_URL:https://api.openai.com/v1/chat/completions}
+    model: ${GPT_MODEL:gpt-4o-mini}
+
+leonardoai:
+  api:
+    key: ${OPENAI_API_KEY}
+    url: ${OPENAI_URL:https://api.openai.com/v1/chat/completions}
+    model: ${GPT_MODEL:gpt-4o-mini}
