@@ -1,6 +1,5 @@
 package com.video.maker.dark.channel.service.impl
 
-import com.video.maker.dark.channel.provider.OpenAIProvider
 import com.video.maker.dark.channel.service.LeonardoAIService
 import com.video.maker.dark.channel.service.OpenAIService
 import com.video.maker.dark.channel.service.VideoService

@@ -1,6 +1,6 @@
 package com.video.maker.dark.channel.vo.request
 
-data class ChatGptRequest(
+data class OpenAIRequest(
     val model: String,
     val messages: List<Message>
 )

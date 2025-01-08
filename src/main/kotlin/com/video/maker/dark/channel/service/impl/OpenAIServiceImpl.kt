@@ -1,6 +1,6 @@
 package com.video.maker.dark.channel.service.impl
 
-import com.video.maker.dark.channel.provider.OpenAIProvider
+import com.video.maker.dark.channel.provider.impl.OpenAIProviderImpl
 import com.video.maker.dark.channel.service.OpenAIService
 import com.video.maker.dark.channel.service.VideoService
 import org.slf4j.Logger
@@ -9,13 +9,13 @@ import org.springframework.stereotype.Service
 
 @Service
 class OpenAIServiceImpl(
-    private val openAIProvider: OpenAIProvider
+    private val openAIProviderImpl: OpenAIProviderImpl
 ): OpenAIService {
     private val logger: Logger = LoggerFactory.getLogger(VideoService::class.java)
 
     override fun getPrompt(theme: String): String? {
         runCatching {
-            openAIProvider.getPrompt(theme).also {
+            openAIProviderImpl.callApi(theme).also {
                 logger.info(" c=VideoService, m=getPrompt, i=Getting a prompt from ChatGPT, status=started")
             }
         }.onSuccess {
