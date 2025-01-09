@@ -45,10 +45,10 @@ class LeonardoAIDataProviderImpl(
                 LeonardAIResponse::class.java
             )
         }.onSuccess {
-            logger.info("c=LeonardoAIProvider, m=callApi, i=Success calling LeonardoAI API")
+            logger.info("c=LeonardoAIProvider, m=generateImage, i=Success generating the image on LeonardoAI !")
         }.onFailure { ex ->
             throw ex.also {
-                logger.info("c=LeonardoAIProvider, m=callApi, status=error, e=${ex.javaClass.simpleName}, message=${ex.localizedMessage}")
+                logger.info("c=LeonardoAIProvider, m=generateImage, status=error, e=${ex.javaClass.simpleName}, message=${ex.localizedMessage}")
             }
         }.getOrThrow().body!!.sdGenerationJob.generationId
     }
@@ -63,7 +63,7 @@ class LeonardoAIDataProviderImpl(
             )
         }.onSuccess { response ->
             logger.info(
-                "c=LeonardoAIProvider, m=improvePrompt, i=Success calling LeonardoAI API, improvedPrompt=${response.body?.promptGeneration?.prompt}"
+                "c=LeonardoAIProvider, m=improvePrompt, i=Success improving the prompt!, improvedPrompt=${response.body?.promptGeneration?.prompt}"
             )
         }.onFailure { ex ->
             logger.info(
@@ -73,7 +73,7 @@ class LeonardoAIDataProviderImpl(
     }
 
     override fun getImage(uuid: String): LeonardoAIGetImagesResponse {
-        logger.info("c=LeonardoAIProvider, m=getImage, i=Getting image, uuid=$uuid")
+        logger.info("c=LeonardoAIProvider, m=getImage, i=Getting image from LeonardoAI, uuid=$uuid")
         waitForLeo()
         return runCatching {
             restTemplate.exchange(
@@ -84,7 +84,7 @@ class LeonardoAIDataProviderImpl(
             )
         }.onSuccess { response ->
             logger.info(
-                "c=LeonardoAIProvider, m=getImage, i=Success calling LeonardoAI API, improvedPrompt=${response.body?.generationsByPk?.id}"
+                "c=LeonardoAIProvider, m=getImage, i=Success getting image !, imageId=${response.body?.generationsByPk?.id}"
             )
         }.onFailure { ex ->
             logger.info(
@@ -101,10 +101,10 @@ class LeonardoAIDataProviderImpl(
 
             repeat(steps) { stepNumber ->
                 delay(stepDuration)
-                logger.info("Waiting to call LeonardoAI: ${(stepNumber + 1) * 10}%")
+                logger.info("Waiting to get the image from LeonardoAI ... ${(stepNumber + 1) * 10}%")
             }
 
-            logger.info("100% - Calling LeonardoAI !")
+            logger.info("Calling LeonardoAI !")
         }
     }
 }

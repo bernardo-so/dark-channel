@@ -1,23 +1,15 @@
 package com.video.maker.dark.channel.vo.request
 
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
+import com.fasterxml.jackson.annotation.JsonProperty
 
-@Serializable
 data class LumaAIRequest(
     val prompt: String,
-    @SerialName("aspect_ratio") val aspectRatio: String = "9:16",
-    val keyframes: Keyframes
+    @JsonProperty("aspect_ratio")
+    val aspectRatio: String = "9:16",
+    val keyframes: Map<String, Frame>
 )
 
-@Serializable
 data class Frame(
     val type: String = "image",
     val url: String
-)
-
-@Serializable
-data class Keyframes(
-    val frame0: Frame,
-    val frame1: Frame
 )

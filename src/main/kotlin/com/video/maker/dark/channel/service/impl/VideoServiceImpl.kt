@@ -23,22 +23,18 @@ class VideoServiceImpl(
 
     private val logger: Logger = LoggerFactory.getLogger(VideoService::class.java)
 
-    override fun create(theme: String): String {
-        val prompt = openAIService.getPrompt(theme, prompt1).also {
+    override fun create(theme: String): List<String> {
+        val promptForLeonardo = openAIService.getPrompt(theme, prompt1).also {
             logger.info("c=VideoServiceImpl, m=create, theme=$theme")
         }
+        val images = leonardoAIService.getImages(promptForLeonardo)
 
-        val images = leonardoAIService.getImages(prompt).also {
-            logger.info("c=VideoServiceImpl, m=create, prompt=$prompt")
-        }
+        val promptForLuma = openAIService.getPrompt(promptForLeonardo, prompt2)
+        val videos = getVideosIDs(promptForLuma, images)
 
-        val promptForLuma = openAIService.getPrompt(prompt, prompt2).also {
-            logger.info("c=VideoServiceImpl, m=create, promptForLuma=$it")
-        }
+        val urlVideoList = getVideosURLs(videos)
 
-        val lumaAIService = lumaAIService.getVideo(promptForLuma, images)
-
-        return lumaAIService
+        return urlVideoList
     }
 
     override fun getImages(prompt: String): List<String> {
@@ -46,7 +42,19 @@ class VideoServiceImpl(
     }
 
     override fun editVideo() {
-        videoService.generateVideo()
+        //videoService.executeFFmpegCommand()
+    }
+
+    fun getVideosIDs(prompt: String, images: List<String>): List<String> {
+        return images.map { url ->
+            lumaAIService.createVideo(prompt, url)
+        }
+    }
+
+    fun getVideosURLs(videos: List<String>): List<String> {
+        return videos.map { id ->
+            lumaAIService.getVideoUrl(id)
+        }
     }
 
 }

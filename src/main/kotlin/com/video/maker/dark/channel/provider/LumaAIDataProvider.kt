@@ -4,6 +4,7 @@ import com.video.maker.dark.channel.vo.request.LumaAIRequest
 import org.springframework.http.HttpEntity
 
 interface LumaAIDataProvider {
-    fun createRequest(prompt: String, urls: List<String>): HttpEntity<LumaAIRequest>?
-    fun generateVideo(prompt: String, urls: List<String>): String
+    fun createRequest(prompt: String,  url: String): HttpEntity<LumaAIRequest>?
+    fun generateVideo(prompt: String,  imageURL: String): String
+    fun getVideo(uuid: String): String
 }

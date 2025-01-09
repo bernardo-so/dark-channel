@@ -13,7 +13,11 @@ class LumaAIServiceImpl(
 
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
 
-    override fun getVideo(prompt:String, urls: List<String>): String {
-        return lumaAIDataProvider.generateVideo(prompt, urls)
+    override fun createVideo(prompt:String, url: String): String {
+        return lumaAIDataProvider.generateVideo(prompt, url)
+    }
+
+    override fun getVideoUrl(uuid: String): String {
+        return lumaAIDataProvider.getVideo(uuid)
     }
 }

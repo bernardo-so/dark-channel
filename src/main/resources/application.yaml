@@ -8,13 +8,13 @@ openai:
     url: https://api.openai.com/v1
     model: gpt-4o-mini
     prompt1: "You are a helpful prompt generator for Leonard.AI, that use always that model of prompt based in what the user want: Picture [the character] [Describe what the character is doing]. [Describe how the character is dressed]. [Describe the setting around, what's the environment like, where is the character, what people are around], the prompt always has the maximum of 200 characters"
-    prompt2: "Resume in a short line the content, by the [Name of the caracter] [Place that it is happenning]"
+    prompt2: "Resume in 3 words the content, it must have the name of the character and the place that he is."
 
 leonardoai:
   api:
     key: ${LEONARDOAI_API_KEY}
     url: https://cloud.leonardo.ai/api/rest/v1
-    model: 1dd50843-d653-4516-a8e3-f0238ee453ff
+    model: 6b645e3a-d64f-4341-a6d8-7a3690fbf042
 
 lumaai:
   api:
