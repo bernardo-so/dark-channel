@@ -1,6 +1,6 @@
 package com.video.maker.dark.channel.provider.impl
 
-import com.video.maker.dark.channel.provider.LeonardoAIProvider
+import com.video.maker.dark.channel.provider.LeonardoAIDataProvider
 import com.video.maker.dark.channel.vo.request.LeonardoAIImproveRequest
 import com.video.maker.dark.channel.vo.request.LeonardoAIRequest
 import com.video.maker.dark.channel.vo.response.LeonardAIResponse
@@ -14,13 +14,15 @@ import org.springframework.http.HttpMethod
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Component
 import org.springframework.web.client.RestTemplate
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
 
 @Component
-class LeonardoAIProviderImpl(
+class LeonardoAIDataProviderImpl(
     @Value("\${leonardoai.api.key}") private val key: String,
     @Value("\${leonardoai.api.url}") private val url: String,
     private val restTemplate: RestTemplate
-) : LeonardoAIProvider {
+) : LeonardoAIDataProvider {
 
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -34,7 +36,7 @@ class LeonardoAIProviderImpl(
             HttpEntity(LeonardoAIRequest(prompt = improvedPrompt), createHeaders())
         } ?: throw IllegalArgumentException("Unable to improve prompt")
 
-    override fun generateImage(prompt: String): String? {
+    override fun generateImage(prompt: String): String {
         return runCatching {
             restTemplate.exchange(
                 "$url/generations",
@@ -70,11 +72,13 @@ class LeonardoAIProviderImpl(
         }.getOrThrow().body!!.promptGeneration.prompt
     }
 
-    override fun getImage(uuid: String): LeonardoAIGetImagesResponse? {
+    override fun getImage(uuid: String): LeonardoAIGetImagesResponse {
+        logger.info("c=LeonardoAIProvider, m=getImage, i=Getting image, uuid=$uuid")
+        waitForLeo()
         return runCatching {
             restTemplate.exchange(
                 "$url/generations/$uuid",
-                HttpMethod.POST,
+                HttpMethod.GET,
                 HttpEntity(null, createHeaders()),
                 LeonardoAIGetImagesResponse::class.java
             )
@@ -89,4 +93,18 @@ class LeonardoAIProviderImpl(
         }.getOrThrow().body!!
     }
 
+    private fun waitForLeo (){
+        runBlocking {
+            val totalDuration = 60_000L
+            val steps = 10
+            val stepDuration = totalDuration / steps
+
+            repeat(steps) { stepNumber ->
+                delay(stepDuration)
+                logger.info("Waiting to call LeonardoAI: ${(stepNumber + 1) * 10}%")
+            }
+
+            logger.info("100% - Calling LeonardoAI !")
+        }
+    }
 }

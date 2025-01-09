@@ -4,7 +4,7 @@ import com.video.maker.dark.channel.vo.request.LeonardoAIRequest
 import com.video.maker.dark.channel.vo.response.LeonardoAIGetImagesResponse
 import org.springframework.http.HttpEntity
 
-interface LeonardoAIProvider {
+interface LeonardoAIDataProvider {
     fun createRequest(prompt: String): HttpEntity<LeonardoAIRequest>?
     fun generateImage(prompt: String): String?
     fun getImage(uuid: String): LeonardoAIGetImagesResponse?

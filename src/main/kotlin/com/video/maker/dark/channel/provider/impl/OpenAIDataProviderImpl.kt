@@ -1,6 +1,6 @@
 package com.video.maker.dark.channel.provider.impl
 
-import com.video.maker.dark.channel.provider.OpenAIProvider
+import com.video.maker.dark.channel.provider.OpenAIDataProvider
 import com.video.maker.dark.channel.vo.request.Message
 import com.video.maker.dark.channel.vo.request.OpenAIRequest
 import com.video.maker.dark.channel.vo.response.OpenAIResponse
@@ -16,7 +16,7 @@ import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.RestTemplate
 
 @Component
-class OpenAIProviderImpl(
+class OpenAIDataProviderImpl(
     @Value("\${openai.api.key}")
     private val key: String,
 
@@ -26,22 +26,19 @@ class OpenAIProviderImpl(
     @Value("\${openai.api.model}")
     private val model: String,
 
-    @Value("\${openai.api.developer}")
-    private val developer: String,
-
     private var restTemplate: RestTemplate
-): OpenAIProvider {
+): OpenAIDataProvider {
 
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
 
-    override fun callApi(theme: String): String {
+    override fun callApi(theme: String, prompt: String): String {
         logger.info("c=OpenAIProvider, m=callApi, i=Calling ChatGTP API, status=started")
 
         return try {
             val response = restTemplate.exchange(
                 "$url/chat/completions",
                 HttpMethod.POST,
-                createRequest(theme),
+                createRequest(theme, prompt),
                 OpenAIResponse::class.java
             )
             response.body?.choices?.firstOrNull()?.message?.content ?: "Sem resposta"
@@ -52,11 +49,11 @@ class OpenAIProviderImpl(
         }
     }
 
-    override fun createRequest(theme: String): HttpEntity<OpenAIRequest> {
+    override fun createRequest(theme: String, prompt: String): HttpEntity<OpenAIRequest> {
         val request = OpenAIRequest(
             model = model,
             messages = listOf(
-                Message(role = "developer", content = developer),
+                Message(role = "developer", content = prompt),
                 Message(role = "user", content = theme)
             )
         )

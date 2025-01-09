@@ -7,10 +7,16 @@ openai:
     key: ${OPENAI_API_KEY}
     url: https://api.openai.com/v1
     model: gpt-4o-mini
-    developer: "You are a helpful prompt generator for Leonard.AI, that use always that model of prompt based in what the user want: Picture [the character] [Describe what the character is doing]. [Describe how the character is dressed]. [Describe the setting around, what's the environment like, where is the character, what people are around], the prompt always has the maximum of 200 characters"
+    prompt1: "You are a helpful prompt generator for Leonard.AI, that use always that model of prompt based in what the user want: Picture [the character] [Describe what the character is doing]. [Describe how the character is dressed]. [Describe the setting around, what's the environment like, where is the character, what people are around], the prompt always has the maximum of 200 characters"
+    prompt2: "Resume in a short line the content, by the [Name of the caracter] [Place that it is happenning]"
 
 leonardoai:
   api:
     key: ${LEONARDOAI_API_KEY}
     url: https://cloud.leonardo.ai/api/rest/v1
     model: 1dd50843-d653-4516-a8e3-f0238ee453ff
+
+lumaai:
+  api:
+    key: ${LUMAAI_API_KEY}
+    url: https://api.lumalabs.ai/dream-machine/v1/

@@ -13,6 +13,6 @@ class OpenAIController(
 ) {
     @GetMapping("/prompt")
     fun create(@RequestBody theme: String): String? {
-        return openAIService.getPrompt(theme)
+        return openAIService.getPrompt("", theme)
     }
 }

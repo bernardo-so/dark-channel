@@ -1,5 +1,6 @@
 package com.video.maker.dark.channel.service
 
+
 interface LeonardoAIService {
-    fun getImages(prompt: String): String?
+    fun getImages(prompt: String): List<String>
 }

@@ -14,7 +14,7 @@ class VideoController(
 ) {
 
     @PostMapping
-    fun create(@RequestBody prompt: String): Boolean {
+    fun create(@RequestBody prompt: String): String {
         return videoService.create(prompt)
     }
 }
